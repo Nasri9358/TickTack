@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TickTack</string>
+    <string name="add_tack">Добавить задачу</string>
 </resources>
