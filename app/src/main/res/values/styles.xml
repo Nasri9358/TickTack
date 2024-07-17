@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="textHeaderStyle">
+        <item name="android:fontFamily">@font/appetite</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+    <style name="bottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/secondaryColor</item>
+        <item name="itemRippleColor">@color/accentColor</item>
+        <item name="itemIconTint">@color/primaryColor</item>
+        <item name="itemTextColor">@color/primaryColor</item>
+        <item name="itemActiveIndicatorStyle">@style/bottomNavigation.ActiveIndicatorStyle</item>
+    </style>
+    <style name="floatingButtonStyle" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="backgroundTint">@color/accentColor</item>
+        <item name="tint">@color/primaryColor</item>
+    </style>
+    <style name="textDefaultStyle">
+        <item name="android:fontFamily">@font/appetite</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="taskItemCardStyle">
+        <item name="cornerRadius">10dp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+    <style name="checkboxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/accentColor</item>
+    </style>
+</resources>
