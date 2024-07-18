@@ -20,6 +20,7 @@
     <style name="textDefaultStyle">
         <item name="android:fontFamily">@font/appetite</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textInfo</item>
     </style>
     <style name="taskItemCardStyle">
         <item name="cornerRadius">10dp</item>
@@ -30,5 +31,19 @@
     </style>
     <style name="checkboxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/accentColor</item>
+    </style>
+    <style name="textInputLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/accentColor</item>
+        <item name="hintTextColor">@color/accentColor</item>
+        <item name="boxStrokeErrorColor">@color/errorColor</item>
+        <item name="cursorColor">@color/black</item>
+    </style>
+    <style name="defaultButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/shape_action_btn</item>
+        <item name="android:padding">10dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:drawableTint">@color/white</item>
     </style>
 </resources>
