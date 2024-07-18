@@ -9,14 +9,16 @@ import android.content.Intent
 import android.icu.text.CaseMap.Title
 import android.os.Build
 import android.os.Message
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.bignerdranch.android.ticktack.MainActivity
 import com.bignerdranch.android.ticktack.R
 
 class NotificationReceiver: BroadcastReceiver() {
-    private lateinit var notification: NotificationManager
+    private lateinit var notificationManager: NotificationManager
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context, intent: Intent?) {
         val title = intent?.getStringExtra(Notification.TITLE_EXTRA_NAME) ?: return
         val message = intent.getStringExtra(Notification.MESSAGE_EXTRA_NAME) ?: return
