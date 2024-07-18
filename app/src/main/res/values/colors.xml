@@ -6,5 +6,7 @@
     <color name="secondaryColor">#222831</color>
     <color name="accentColor">#FF69B4</color>
     <color name="errorColor">#FF69B4</color>
+    <color name="textInfo">#474A51</color>
+
 
 </resources>
