@@ -9,4 +9,5 @@ interface TaskGroupRepository {
 
     suspend fun getAllTaskGroup(): List<TaskGroup>
     suspend fun getTaskGroupById(id: Int): TaskGroup
+    abstract fun getAllTaskGroups(): List<TaskGroup>
 }
