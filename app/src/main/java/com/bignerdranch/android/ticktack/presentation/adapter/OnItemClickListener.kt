@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.domain.models.TaskItem
+import com.bignerdranch.android.ticktack.presentation.view.taskGroupView.TaskGroupActivity
+import com.bignerdranch.android.ticktack.presentation.view.taskView.TaskActivity
 import com.bignerdranch.android.ticktack.presentation.viewModel.TaskViewModel
 
 const val TASK_NAME_EXTRA = "task"

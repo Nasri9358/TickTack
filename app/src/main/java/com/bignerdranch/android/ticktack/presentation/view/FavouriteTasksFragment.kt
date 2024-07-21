@@ -4,35 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListener
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
 import com.bignerdranch.android.ticktack.presentation.viewModel.FavouriteTasksFragmentViewModel
-import com.bignerdranch.android.ticktack.presentation.viewModel.MainFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class FavouriteTaskFragment : Fragment() {
-    private lateinit var binding: FragmentFavouriteTaskBinding
+class FavouriteTasksFragment : Fragment() {
+    private lateinit var binding: FragmentFavouriteTasksBinding
     private lateinit var recycler: RecyclerView
-    private lateinit var favouriteTaskFragmentViewModel: FavouriteTasksFragmentViewModel
+    private lateinit var favouriteTasksFragmentViewModel: FavouriteTasksFragmentViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFavoutiteTaskBinding.inflate(layoutInflater,container, false)
-        favouriteTaskFragmentViewModel = getViewMdel()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentFavouriteTasksBinding.inflate(layoutInflater, container, false)
+        favouriteTasksFragmentViewModel = getViewModel()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = TaskAdapter(OnItemClickListener(requireContext(), favouriteTaskFragmentViewModel))
+        val adapter = TaskAdapter(OnItemClickListener(requireContext(), favouriteTasksFragmentViewModel))
 
         recycler = binding.rvTaskList
         recycler.apply {
@@ -40,13 +34,13 @@ class FavouriteTaskFragment : Fragment() {
             this.adapter = adapter
         }
 
-        favouriteTaskFragmentViewModel.favouriteTasks.observe(viewLifecycleOwner) {list ->
+        favouriteTasksFragmentViewModel.favouriteTasks.observe(viewLifecycleOwner) { list ->
             adapter.updateList(list)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        favouriteTaskFragmentViewModel.getFavouriteTasks()
+        favouriteTasksFragmentViewModel.getFavouriteTasks()
     }
 }

@@ -9,8 +9,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.databinding.ActivityMainBinding
 import com.bignerdranch.android.ticktack.presentation.view.taskGroupView.CreateTaskGroupActivity
 import com.bignerdranch.android.ticktack.presentation.view.taskView.CreateTaskActivity
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

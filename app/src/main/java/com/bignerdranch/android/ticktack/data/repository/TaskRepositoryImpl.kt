@@ -2,13 +2,15 @@ package com.bignerdranch.android.ticktack.data.repository
 
 import com.bignerdranch.android.ticktack.data.room.Mapper
 import com.bignerdranch.android.ticktack.data.room.dao.TaskDao
-import kotlin.math.tan
+import com.bignerdranch.android.ticktack.domain.models.Task
+import com.bignerdranch.android.ticktack.domain.repository.TaskRepository
+
 
 class TaskRepositoryImpl(private val taskDao: TaskDao): TaskRepository {
     private val mapper = Mapper()
 
-    override suspend fun addTask(task: Task) {
-        taskDao.addTask(mapper.taskToTaskEntity(task))
+    override suspend fun createTask(task: Task) {
+        taskDao.createTask(mapper.taskToTaskEntity(task))
     }
 
     override suspend fun updateTask(task: Task) {

@@ -1,25 +1,28 @@
 package com.bignerdranch.android.ticktack.presentation.view.taskGroupView
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
-import android.view.inputmethod.InputBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.ticktack.databinding.ActivityTaskGroupBinding
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListener
 import com.bignerdranch.android.ticktack.presentation.adapter.TASK_GROUP_NAME_EXTRA
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
-import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskGroupActivityViewModel
+import com.bignerdranch.android.ticktack.presentation.view.taskView.CreateTaskActivity
 import com.bignerdranch.android.ticktack.presentation.viewModel.TaskGroupActivityViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TaskGroupActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTaskGroupBinding
     private lateinit var recycler: RecyclerView
     private lateinit var taskGroup: TaskGroup
+
+//    private lateinit var taskGroupViewModel: TaskGroupViewModel
+//    private lateinit var tasksViewModel: TasksViewModel
+
     private lateinit var taskGroupActivityViewModel: TaskGroupActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +40,7 @@ class TaskGroupActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        taskGroupActivityViewModel.task.observe(this) {
+        taskGroupActivityViewModel.tasks.observe(this) {
             adapter.updateList(it)
 
             binding.tvIsEmptyList.visibility = if (it.isEmpty()) {
@@ -51,7 +54,7 @@ class TaskGroupActivity : AppCompatActivity() {
             deleteTaskGroup()
         }
 
-        binding.btnAddTaskGroup.setOnClickListener {
+        binding.btnAddTaskToGroup.setOnClickListener {
             addTask()
         }
 
@@ -67,14 +70,14 @@ class TaskGroupActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        taskGroupActivityViewModel.getAllTaskById(taskGroup.id)
+        taskGroupActivityViewModel.getAllTasksById(taskGroup.id)
     }
 
     private fun updateTaskGroup(newTaskGroup: TaskGroup) {
         val name = binding.tvTaskGroupName.text.toString()
-        val dec = binding. tvTaskGroupDescription.text.toString()
+        val desc = binding.tvTaskGroupDescription.text.toString()
 
-        taskGroup = if (newTaskGroup.name != title ||newTaskGroup.description != desc) {
+        taskGroup = if (newTaskGroup.name != title || newTaskGroup.description != desc){
             newTaskGroup.copy(name = name, description = desc)
         } else {
             newTaskGroup
@@ -85,16 +88,17 @@ class TaskGroupActivity : AppCompatActivity() {
     }
 
     private fun addTask() {
-        val intent  = Intent(this, CreateTaskActivity::class.java)
+        val intent = Intent(this, CreateTaskActivity::class.java)
         intent.putExtra("taskGroupId", taskGroup.id)
         startActivity(intent)
     }
 
     private fun setTaskGroupData() {
-        binding.tvTaskGroupName.setText(TaskGroup.name)
+        binding.tvTaskGroupName.setText(taskGroup.name)
         binding.tvTaskGroupDescription.setText(taskGroup.description)
     }
 
+    // добавить уведомление, что делать с задачами
     private fun deleteTaskGroup() {
         taskGroupActivityViewModel.deleteTaskGroup(taskGroup)
         finish()

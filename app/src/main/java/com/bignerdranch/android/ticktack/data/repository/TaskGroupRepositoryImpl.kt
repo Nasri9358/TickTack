@@ -2,12 +2,14 @@ package com.bignerdranch.android.ticktack.data.repository
 
 import com.bignerdranch.android.ticktack.data.room.Mapper
 import com.bignerdranch.android.ticktack.data.room.dao.TaskGroupDao
+import com.bignerdranch.android.ticktack.domain.models.TaskGroup
+import com.bignerdranch.android.ticktack.domain.repository.TaskGroupRepository
 
 class TaskGroupRepositoryImpl(private val taskGroupDao: TaskGroupDao): TaskGroupRepository {
     private val mapper = Mapper()
 
-    override suspend fun addTaskGroup(taskGroup: TaskGroup) {
-        taskGroupDao.addTaskGroup(mapper.taskGroupToTaskGroupEntity(taskGroup))
+    override suspend fun createTaskGroup(taskGroup: TaskGroup) {
+        taskGroupDao.createTaskGroup(mapper.taskGroupToTaskGroupEntity(taskGroup))
     }
 
     override suspend fun deleteTaskGroup(taskGroup: TaskGroup) {
@@ -24,7 +26,7 @@ class TaskGroupRepositoryImpl(private val taskGroupDao: TaskGroupDao): TaskGroup
         }
     }
 
-    override suspend fun getTaskGroupId(id: Int): TaskGroup {
+    override suspend fun getTaskGroupById(id: Int): TaskGroup {
         return mapper.taskGroupEntityToTaskGroup(taskGroupDao.getTaskGroupById(id))
     }
 }

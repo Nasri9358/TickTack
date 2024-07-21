@@ -9,6 +9,7 @@ import com.bignerdranch.android.ticktack.R
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskGroupActivityViewModel
 import kotlinx.coroutines.internal.OpDescriptor
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class CreateTaskGroupActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTaskGroupBinding
@@ -21,21 +22,21 @@ class CreateTaskGroupActivity : AppCompatActivity() {
 
         binding.btnAddTaskGroup.setOnClickListener {
             val name = binding.inputTaskGroupName.text.toString()
-            val descriptor = binding.inputTaskGroupDescription.text.toString()
+            val description = binding.inputTaskGroupDescription.text.toString()
 
             if (name.isBlank()) {
                 binding.inputTaskGroupName.error = getString(R.string.enterName)
                 return@setOnClickListener
             }
 
-            addTaskGroup(name,descriptor)
+            addTaskGroup(name, description)
         }
 
         setContentView(binding.root)
     }
 
-    private fun addTaskGroup(name: String, descriptor: String) {
-        createTaskGroupActivityViewModel.createTaskGroup(TaskGroup(name,descriptor))
+    private fun addTaskGroup(name: String, description: String) {
+        createTaskGroupActivityViewModel.createTaskGroup(TaskGroup(name, description))
         finish()
     }
 }

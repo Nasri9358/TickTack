@@ -13,6 +13,7 @@ import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListene
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
 import com.bignerdranch.android.ticktack.presentation.viewModel.FavouriteTasksFragmentViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.MainFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding

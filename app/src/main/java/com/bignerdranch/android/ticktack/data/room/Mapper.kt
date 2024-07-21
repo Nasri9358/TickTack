@@ -2,6 +2,8 @@ package com.bignerdranch.android.ticktack.data.room
 
 import com.bignerdranch.android.ticktack.data.room.entity.TaskEntity
 import com.bignerdranch.android.ticktack.data.room.entity.TaskGroupEntity
+import com.bignerdranch.android.ticktack.domain.models.Task
+import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 
 class Mapper {
     fun taskToTaskEntity(task: Task): TaskEntity {
@@ -22,7 +24,7 @@ class Mapper {
             taskEntity.description,
             taskEntity.isFavourite,
             taskEntity.isCompleted,
-            taskEntity.completionDateInMills,
+            taskEntity.completionDateInMillis,
             taskEntity.taskGroupId,
             taskEntity.id,
         )

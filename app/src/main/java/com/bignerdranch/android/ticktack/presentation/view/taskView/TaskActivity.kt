@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.databinding.ActivityTaskBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
 import com.bignerdranch.android.ticktack.presentation.adapter.TASK_NAME_EXTRA
@@ -65,8 +66,8 @@ class TaskActivity : AppCompatActivity() {
         binding.tvTaskTitle.setText(task.title)
         binding.tvTaskDescreption.setText(task.description)
 
-        if (task.comletionDateInMills != null) {
-            binding.tvTaskComplectionDate.text = DateUtils.normalDateFormat(task.comletionDateInMills!!)
+        if (task.completionDateInMills != null) {
+            binding.tvTaskComplectionDate.text = DateUtils.normalDateFormat(task.completionDateInMills!!)
             binding.tvTaskCompletionDate.alpha = 1.0F
         } else {
             binding.tvTaskCompletionDate.alpha = 0.3F
@@ -119,7 +120,7 @@ class TaskActivity : AppCompatActivity() {
             calendar.set(Calendar.MINUTE, minute)
 
             setTaskNotification(calendar.timeInMillis)
-            updateTask(task.copy(comletionDateInMills = calendar.timeInMillis))
+            updateTask(task.copy(completionDateInMills = calendar.timeInMillis))
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
 
         val datePickerDialog = DatePickerDialog(this, {view, year, month, dayOfMonth ->
@@ -128,10 +129,10 @@ class TaskActivity : AppCompatActivity() {
             timePicker.show()
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
-        if (task.comletionDateInMills != null){
+        if (task.completionDateInMills != null){
             datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Удалить") {_, _ ->
                 cancelTaskNotification()
-                updateTask(task.copy(comletionDateInMills = null))
+                updateTask(task.copy(completionDateInMills = null))
             }
         }
 
@@ -144,8 +145,8 @@ class TaskActivity : AppCompatActivity() {
     }
 
     private fun cancelTaskNotification() {
-        if (task.comletionDateInMills != null) {
-            notificationViewModel.cancelTaskNotification(task, task.comletionDateInMills!! - 86400000 )
+        if (task.completionDateInMills != null) {
+            notificationViewModel.cancelTaskNotification(task, task.completionDateInMills!! - 86400000 )
         }
     }
 

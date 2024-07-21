@@ -30,17 +30,16 @@ class TaskGroupActivityViewModel(
     }
 
     fun deleteTaskGroup(taskGroup: TaskGroup) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch (dispatcher) {
             deleteTaskGroupIds().join()
             deleteTaskGroupUseCase.execute(taskGroup)
         }
     }
 
-    fun getAllTaskById(taskGroupId: Int) {
-        viewModelScope.launch(dispatcher) {
+    fun getAllTasksById(taskGroupId: Int) {
+        viewModelScope.launch (dispatcher) {
             tasks.postValue(getAllTasksUseCase.execute(taskGroupId))
         }
-    }
 
     fun deleteTasks() {
         viewModelScope.launch(dispatcher) {
