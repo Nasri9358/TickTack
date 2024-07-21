@@ -11,17 +11,17 @@ import com.bignerdranch.android.ticktack.data.room.entity.TaskGroupEntity
 interface TaskGroupDao {
 
     @Insert
-    suspend fun addTaskGroup(taskGroupEntity: TaskGroupEntity)
-
-    @Update
-    suspend fun updateTaskGroup(taskGroupEntity: TaskGroupEntity)
+    suspend fun createTaskGroup(taskGroupEntity: TaskGroupEntity)
 
     @Delete
     suspend fun deleteTaskGroup(taskGroupEntity: TaskGroupEntity)
 
-    @Query ("SELECT * from task_group")
+    @Update
+    suspend fun updateTaskGroup(taskGroupEntity: TaskGroupEntity)
+
+    @Query("SELECT * from task_group")
     suspend fun getAllTaskGroups(): List<TaskGroupEntity>
 
-    @Query ("SELECT * from task_group WHERE id=:id")
+    @Query("SELECT * from task_group WHERE id=:id")
     suspend fun getTaskGroupById(id: Int): TaskGroupEntity
 }
