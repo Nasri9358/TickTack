@@ -6,13 +6,11 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.icu.text.CaseMap.Title
 import android.os.Build
-import android.os.Message
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.bignerdranch.android.ticktack.MainActivity
+import com.bignerdranch.android.ticktack.presentation.view.MainActivity
 import com.bignerdranch.android.ticktack.R
 
 class NotificationReceiver: BroadcastReceiver() {

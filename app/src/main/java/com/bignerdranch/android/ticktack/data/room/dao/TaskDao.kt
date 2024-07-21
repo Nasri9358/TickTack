@@ -6,7 +6,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.bignerdranch.android.ticktack.Task
 import com.bignerdranch.android.ticktack.data.room.entity.TaskEntity
 
 @Dao
