@@ -34,7 +34,7 @@ class TaskActivityViewModel(
         }
     }
 
-    fun grtTaskGroupsNames() = if (taskGroups.value != null) {
+    fun getTaskGroupsNames() = if (taskGroups.value != null) {
         taskGroups.value!!.map { it.id }
     } else {
         listOf()
