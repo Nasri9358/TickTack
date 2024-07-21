@@ -1,6 +1,5 @@
 package com.bignerdranch.android.ticktack.data.room
 
-import com.bignerdranch.android.ticktack.Task
 import com.bignerdranch.android.ticktack.data.room.entity.TaskEntity
 import com.bignerdranch.android.ticktack.data.room.entity.TaskGroupEntity
 

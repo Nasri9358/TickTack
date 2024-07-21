@@ -1,6 +1,5 @@
 package com.bignerdranch.android.ticktack.data.repository
 
-import com.bignerdranch.android.ticktack.Task
 import com.bignerdranch.android.ticktack.data.room.Mapper
 import com.bignerdranch.android.ticktack.data.room.dao.TaskDao
 import kotlin.math.tan

@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.bignerdranch.android.ticktack.Task
 import com.bignerdranch.android.ticktack.data.room.dao.TaskDao
 import com.bignerdranch.android.ticktack.data.room.dao.TaskGroupDao
 import com.bignerdranch.android.ticktack.data.room.entity.TaskEntity
