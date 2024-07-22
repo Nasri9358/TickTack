@@ -1,7 +1,13 @@
 package com.bignerdranch.android.ticktack.di
 
-import androidx.lifecycle.ViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskActivityViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskGroupActivityViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.FavouriteTasksFragmentViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.MainFragmentViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.TaskActivityViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.TaskGroupActivityViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val appModule = module {
@@ -12,15 +18,22 @@ val appModule = module {
         )
     }
 
-    ViewModel<CreateTaskActivityViewModel> {
+    viewModel<FavouriteTasksFragmentViewModel> {
+        FavouriteTasksFragmentViewModel(
+            getFavouriteTasksUseCase = get(),
+            updateTaskUseCase = get()
+        )
+    }
+
+    viewModel<CreateTaskActivityViewModel> {
         CreateTaskActivityViewModel(
             createTaskUseCase = get()
         )
     }
 
-    ViewModel<CreateTaskGroupActivityViewModel> {
+    viewModel<CreateTaskGroupActivityViewModel> {
         CreateTaskGroupActivityViewModel(
-            createTaskUseCase = get()
+            createTaskGroupUseCase = get()
         )
     }
 
@@ -42,7 +55,4 @@ val appModule = module {
             deleteTaskUseCase = get()
         )
     }
-
-
-
 }

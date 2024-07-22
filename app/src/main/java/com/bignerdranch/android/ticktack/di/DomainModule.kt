@@ -1,5 +1,17 @@
 package com.bignerdranch.android.ticktack.di
 
+import com.bignerdranch.android.ticktack.domain.usecase.GetAllTaskItemsUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.CreateTaskGroupUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.DeleteTaskGroupUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.GetAllTaskGroupsUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.GetTaskGroupByIdUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.UpdateTaskGroupUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.CreateTaskUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.DeleteTaskUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.GetAllTasksUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.GetFavouriteTasksUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.GetTaskByIdUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.UpdateTaskUseCase
 import org.koin.dsl.module
 
 

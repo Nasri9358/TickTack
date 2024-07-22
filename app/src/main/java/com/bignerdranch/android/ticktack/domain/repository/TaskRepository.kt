@@ -1,7 +1,6 @@
 package com.bignerdranch.android.ticktack.domain.repository
 
 import com.bignerdranch.android.ticktack.domain.models.Task
-import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 
 interface TaskRepository {
     suspend fun createTask(task: Task)

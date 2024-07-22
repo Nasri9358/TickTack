@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.bignerdranch.android.ticktack"
-    compileSdk = 34
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "com.bignerdranch.android.ticktack"

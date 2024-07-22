@@ -21,6 +21,7 @@ import com.bignerdranch.android.ticktack.presentation.viewModel.TaskActivityView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTaskBinding

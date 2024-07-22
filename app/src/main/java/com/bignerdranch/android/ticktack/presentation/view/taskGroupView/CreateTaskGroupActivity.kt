@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.view.inputmethod.InputBinding
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskGroupBinding
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskGroupActivityViewModel
 import kotlinx.coroutines.internal.OpDescriptor

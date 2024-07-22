@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.databinding.TaskGroupItemBinding
 import com.bignerdranch.android.ticktack.databinding.TaskItemBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
