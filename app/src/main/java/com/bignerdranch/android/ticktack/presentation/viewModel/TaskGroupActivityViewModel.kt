@@ -20,11 +20,11 @@ class TaskGroupActivityViewModel(
     private val updateTaskUseCase: UpdateTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
 ): ViewModel(), TaskViewModel {
-    val task = MutableLiveData<List<Task>>()
+    val tasks = MutableLiveData<List<Task>>()
     private val dispatcher = Dispatchers.IO
 
     fun updateTaskGroup(taskGroup: TaskGroup) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch (dispatcher) {
             updateTaskGroupUseCase.execute(taskGroup)
         }
     }
@@ -40,21 +40,22 @@ class TaskGroupActivityViewModel(
         viewModelScope.launch (dispatcher) {
             tasks.postValue(getAllTasksUseCase.execute(taskGroupId))
         }
+    }
 
     fun deleteTasks() {
-        viewModelScope.launch(dispatcher) {
-            task.value?.forEach{deleteTaskUseCase.execute(it)}
+        viewModelScope.launch (dispatcher) {
+            tasks.value?.forEach { deleteTaskUseCase.execute(it) }
         }
     }
 
-    private suspend fun deleteTaskGroupIds() = viewModelScope.launch (dispatcher) {
-        task.value?.forEach { updateTaskUseCase.execute(it.copy(taskGroupId = null)) }
+    private suspend fun deleteTaskGroupIds() = viewModelScope.launch(dispatcher) {
+        tasks.value?.forEach { updateTaskUseCase.execute(it.copy(taskGroupId = null)) }
     }
 
     override fun completeTask(task: Task) {
-        viewModelScope.launch (dispatcher) {
+        viewModelScope.launch (dispatcher){
             updateTaskUseCase.execute(task.copy(isCompleted = !task.isCompleted))
-            getAllTaskById(task.taskGroupId!!)
+            getAllTasksById(task.taskGroupId!!)
         }
     }
 }
