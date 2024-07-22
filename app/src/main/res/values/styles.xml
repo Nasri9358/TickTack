@@ -11,6 +11,10 @@
         <item name="itemTextColor">@color/primaryColor</item>
         <item name="itemActiveIndicatorStyle">@style/bottomNavigation.ActiveIndicatorStyle</item>
     </style>
+
+    <style name="bottomNavigation.ActiveIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/selectedItemColor</item>
+    </style>
     <style name="floatingButtonStyle" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="android:layout_height">60dp</item>
         <item name="android:layout_width">60dp</item>

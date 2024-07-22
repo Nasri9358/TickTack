@@ -7,6 +7,7 @@
     <color name="accentColor">#FF69B4</color>
     <color name="errorColor">#FF69B4</color>
     <color name="textInfo">#474A51</color>
+    <color name="selectedItemColor">#363C44</color>
 
 
 </resources>
