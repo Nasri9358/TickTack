@@ -2,7 +2,7 @@ package com.bignerdranch.android.ticktack.domain.models
 
 import java.io.Serializable
 
-class TaskGroup (
+data class TaskGroup (
     val name:String,
     val description: String,
     val id: Int = 0,

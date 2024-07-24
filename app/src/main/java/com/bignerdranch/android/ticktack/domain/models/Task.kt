@@ -7,7 +7,7 @@ data class Task (
     val description: String,
     val isFavourite: Boolean = false,
     val isCompleted: Boolean = false,
-    val completionDateInMills: Long? = null,
+    val completionDateInMillis: Long? = null,
     val taskGroupId: Int? = null,
     val id: Int = 0,
 ) : TaskItem, Serializable

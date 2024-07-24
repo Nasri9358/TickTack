@@ -12,7 +12,7 @@ class Mapper {
             task.description,
             task.isFavourite,
             task.isCompleted,
-            task.completionDateInMills,
+            task.completionDateInMillis,
             task.taskGroupId,
             task.id,
         )

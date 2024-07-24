@@ -4,6 +4,7 @@ import com.bignerdranch.android.ticktack.data.room.Mapper
 import com.bignerdranch.android.ticktack.data.room.dao.TaskGroupDao
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.domain.repository.TaskGroupRepository
+import com.bignerdranch.android.ticktack.data.room.entity.TaskGroupEntity
 
 
 class TaskGroupRepositoryImpl(private val taskGroupDao: TaskGroupDao): TaskGroupRepository {

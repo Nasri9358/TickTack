@@ -7,7 +7,6 @@ interface TaskGroupRepository {
     suspend fun deleteTaskGroup(taskGroup: TaskGroup)
     suspend fun updateTaskGroup(taskGroup: TaskGroup)
 
-    suspend fun getAllTaskGroup(): List<TaskGroup>
+    suspend fun getAllTaskGroups(): List<TaskGroup>
     suspend fun getTaskGroupById(id: Int): TaskGroup
-    abstract suspend fun getAllTaskGroups(): List<TaskGroup>
 }
