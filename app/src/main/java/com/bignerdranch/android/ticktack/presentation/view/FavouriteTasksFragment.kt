@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.ticktack.databinding.FragmentFavouriteTasksBinding
 import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListener
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
 import com.bignerdranch.android.ticktack.presentation.viewModel.FavouriteTasksFragmentViewModel

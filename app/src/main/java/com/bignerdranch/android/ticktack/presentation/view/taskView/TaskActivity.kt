@@ -53,6 +53,11 @@ class TaskActivity : AppCompatActivity() {
             setTaskGroup()
         }
 
+        binding.ivIsFavourite.setOnClickListener {
+            clearEditTextFocus()
+            updateTask(task.copy(isFavourite = !task.isFavourite))
+        }
+
         updateTaskUI()
         setContentView(binding.root)
     }
@@ -64,18 +69,21 @@ class TaskActivity : AppCompatActivity() {
     }
 
     private fun updateTaskUI() {
+        // task data
         binding.tvTaskTitle.setText(task.title)
-        binding.tvTaskDescreption.setText(task.description)
+        binding.tvTaskDescription.setText(task.description)
 
-        if (task.completionDateInMills != null) {
-            binding.tvTaskComplectionDate.text = DateUtils.normalDateFormat(task.completionDateInMills!!)
+        // task completion date
+        if (task.completionDateInMillis != null) {
+            binding.tvTaskCompletionDate.text = DateUtils.normalDateFormat(task.completionDateInMillis!!)
             binding.tvTaskCompletionDate.alpha = 1.0F
         } else {
             binding.tvTaskCompletionDate.alpha = 0.3F
-            binding.tvTaskCompletionDate.text = "Добавить дату/ время"
+            binding.tvTaskCompletionDate.text = "Добавить дату / время"
         }
 
-        if (task.taskGroupId != null ) lifecycleScope.launch {
+        // task group
+        if (task.taskGroupId != null) lifecycleScope.launch {
             val taskGroup = taskActivityViewModel.getTaskGroupById(task.taskGroupId!!).await()
 
             withContext(Dispatchers.Main) {
@@ -87,6 +95,7 @@ class TaskActivity : AppCompatActivity() {
             binding.tvTaskGroupInfo.text = "Добавить группу"
         }
 
+        // favourite status
         if (task.isFavourite) {
             binding.ivIsFavourite.setImageDrawable(resources.getDrawable(R.drawable.ic_favourite_fill, applicationContext.theme))
         } else {
@@ -98,8 +107,8 @@ class TaskActivity : AppCompatActivity() {
         val title = binding.tvTaskTitle.text.toString()
         val desc = binding.tvTaskDescription.text.toString()
 
-        task = if(newTask.title != title || newTask.description != desc) {
-        newTask.copy(title = title, description = desc)
+        task = if (newTask.title != title || newTask.description != desc){
+            newTask.copy(title = title, description = desc)
         } else {
             newTask
         }
@@ -113,41 +122,42 @@ class TaskActivity : AppCompatActivity() {
         finish()
     }
 
+    // Calendar -> LocalDate
     private fun setTaskCompletionDate() {
         val calendar = Calendar.getInstance()
 
-        val timePicker =  TimePickerDialog(this, {_, hourOfDay, minute ->
+        val timePicker = TimePickerDialog(this, { _, hourOfDay, minute ->
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
             calendar.set(Calendar.MINUTE, minute)
 
             setTaskNotification(calendar.timeInMillis)
-            updateTask(task.copy(completionDateInMills = calendar.timeInMillis))
+            updateTask(task.copy(completionDateInMillis = calendar.timeInMillis))
+
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
 
-        val datePickerDialog = DatePickerDialog(this, {view, year, month, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog(this, { view, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
 
             timePicker.show()
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
-        if (task.completionDateInMills != null){
-            datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Удалить") {_, _ ->
+        if (task.completionDateInMillis != null) {
+            datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Удалить") { _, _ ->
                 cancelTaskNotification()
-                updateTask(task.copy(completionDateInMills = null))
+                updateTask(task.copy(completionDateInMillis = null))
             }
         }
 
         datePickerDialog.show()
-
     }
 
     private fun setTaskNotification(completionDate: Long) {
-        notificationViewModel.setTaskNotification(task,completionDate)
+        notificationViewModel.setTaskNotification(task, completionDate)
     }
 
     private fun cancelTaskNotification() {
-        if (task.completionDateInMills != null) {
-            notificationViewModel.cancelTaskNotification(task, task.completionDateInMills!! - 86400000 )
+        if (task.completionDateInMillis != null) {
+            notificationViewModel.cancelTaskNotification(task, task.completionDateInMillis!! - 86400000)
         }
     }
 
@@ -165,16 +175,16 @@ class TaskActivity : AppCompatActivity() {
             return
         }
 
-        val currentItemIndex = taskGroupIds.indexOf(taskGroupIds)
+        val currentItemIndex = taskGroupIds.indexOf(task.taskGroupId)
         val currentItem = if (currentItemIndex != -1) taskGroupNames.indexOf(taskGroupNames[currentItemIndex]) else -1
 
         val dialog = AlertDialog.Builder(this)
             .setTitle("Выбрать группу")
             .setSingleChoiceItems(taskGroupNames, currentItem, null)
-            .setPositiveButton("Переместить") {dialog, _ ->
+            .setPositiveButton("Переместить") { dialog, _ ->
                 val checkedIndex = (dialog as AlertDialog).listView.checkedItemPosition
                 if (checkedIndex != ListView.INVALID_POSITION) {
-                    task = task.copy( taskGroupId =  taskGroupIds[checkedIndex])
+                    task = task.copy(taskGroupId = taskGroupIds[checkedIndex])
                     updateTask(task)
                 } else {
                     dialog.dismiss()

@@ -35,12 +35,18 @@ class TaskActivityViewModel(
     }
 
     fun getTaskGroupsNames() = if (taskGroups.value != null) {
+        taskGroups.value!!.map { it.name }.toTypedArray()
+    } else {
+        arrayOf()
+    }
+
+    fun getTaskGroupIds() = if (taskGroups.value != null) {
         taskGroups.value!!.map { it.id }
     } else {
         listOf()
     }
 
-    suspend fun getTaskGroupById(id: Int ) = viewModelScope.async(dispatcher) {
+    suspend fun getTaskGroupById(id: Int) = viewModelScope.async(dispatcher) {
         getTaskGroupByIdUseCase.execute(id)
     }
 

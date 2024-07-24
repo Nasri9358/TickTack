@@ -7,10 +7,12 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskActivityViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.NotificationViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class CreateTaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTaskBinding
