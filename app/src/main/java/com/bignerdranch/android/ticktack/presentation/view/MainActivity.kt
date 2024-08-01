@@ -16,17 +16,15 @@ import com.bignerdranch.android.ticktack.presentation.view.taskView.CreateTaskAc
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private var mainFragment = MainFragment()
     private var favouriteTasksFragment = FavouriteTasksFragment()
     private var infoFragment = InfoFragment()
-    private lateinit var createItemDialog: Dialog
+    private val createItemDialog by lazy { Dialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        createItemDialog = Dialog(this)
 
         setContentView(binding.root)
         setFragment(mainFragment)

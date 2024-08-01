@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.icu.util.Calendar
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.ticktack.R
 import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskBinding
@@ -12,12 +13,11 @@ import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskActivityViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.NotificationViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class CreateTaskActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCreateTaskBinding
-    private lateinit var createTaskActivityViewModel: CreateTaskActivityViewModel
-    private lateinit var notificationViewModel: NotificationViewModel
+    private val binding by lazy { ActivityCreateTaskBinding.inflate(layoutInflater) }
+    private val createTaskActivityViewModel: CreateTaskActivityViewModel by viewModels()
+    private val notificationViewModel by lazy { NotificationViewModel(this) }
 
     private var task = Task("", "")
     private var taskGroupId: Int? = null
@@ -25,10 +25,6 @@ class CreateTaskActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateTaskBinding.inflate(layoutInflater)
-
-        createTaskActivityViewModel = getViewModel()
-        notificationViewModel = NotificationViewModel(this)
 
         taskGroupId = intent.extras?.getInt("taskGroupId")
 
@@ -62,7 +58,6 @@ class CreateTaskActivity : AppCompatActivity() {
         task = task.copy(title = title, description = description, isFavourite = isFavourite, completionDateInMillis = completionDateInMillis, taskGroupId = taskGroupId)
     }
 
-    // использовать LocalDate вместо Calendar
     private fun setTaskCompletionDate() {
         val calendar = Calendar.getInstance()
 

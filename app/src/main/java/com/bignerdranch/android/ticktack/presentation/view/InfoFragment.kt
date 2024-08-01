@@ -9,13 +9,13 @@ import com.bignerdranch.android.ticktack.BuildConfig
 import com.bignerdranch.android.ticktack.databinding.FragmentInfoBinding
 
 class InfoFragment : Fragment() {
-    private lateinit var binding: FragmentInfoBinding
+    private val binding by lazy {FragmentInfoBinding.inflate(layoutInflater)}
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?
     ): View {
-        binding = FragmentInfoBinding.inflate(layoutInflater, container, false)
+        val binding = FragmentInfoBinding.inflate(layoutInflater, container, false)
         binding.tvAppVersionInfo.text = BuildConfig.VERSION_NAME
         return binding.root
     }

@@ -8,6 +8,7 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.ListView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -15,29 +16,20 @@ import com.bignerdranch.android.ticktack.R
 import com.bignerdranch.android.ticktack.databinding.ActivityTaskBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
-import com.bignerdranch.android.ticktack.presentation.adapter.TASK_NAME_EXTRA
 import com.bignerdranch.android.ticktack.presentation.viewModel.NotificationViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.TaskActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TaskActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTaskBinding
-    private lateinit var notificationViewModel: NotificationViewModel
-    private lateinit var task: Task
-
-    private lateinit var taskActivityViewModel: TaskActivityViewModel
+    private val binding by lazy { ActivityTaskBinding.inflate(layoutInflater) }
+    private val notificationViewModel by lazy { NotificationViewModel(this) }
+    private val taskActivityViewModel: TaskActivityViewModel by viewModels()
+    private var task: Task = Task("", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTaskBinding.inflate(layoutInflater)
-
-        taskActivityViewModel = getViewModel()
-        notificationViewModel = NotificationViewModel(this)
-
-        task = intent.extras?.getSerializable(TASK_NAME_EXTRA) as Task
 
         binding.btnDeleteTask.setOnClickListener {
             cancelTaskNotification()
