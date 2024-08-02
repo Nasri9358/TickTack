@@ -18,4 +18,5 @@
     <string name="group">Список</string>
     <string name="set">Назначить</string>
     <string name="newGroup">Новая группа</string>
+    <string name="create">Создать задачу</string>
 </resources>

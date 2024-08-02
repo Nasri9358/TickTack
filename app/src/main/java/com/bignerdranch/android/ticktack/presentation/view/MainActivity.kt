@@ -18,10 +18,9 @@ import com.bignerdranch.android.ticktack.presentation.view.taskView.CreateTaskAc
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private var mainFragment = MainFragment()
+    private var mainFragment = TaskFragment()
     private var favouriteTasksFragment = FavouriteTasksFragment()
     private var infoFragment = InfoFragment()
-    private val createItemDialog by lazy { Dialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +35,16 @@ class MainActivity : AppCompatActivity() {
 
             when(it.itemId) {
                 R.id.nav_favourive -> {
-                    binding.btnCreateItem.visibility = View.GONE
                     setFragment(favouriteTasksFragment)
                     true
                 }
 
                 R.id.nav_tasks -> {
-                    binding.btnCreateItem.visibility = View.VISIBLE
                     setFragment(mainFragment)
                     true
                 }
 
                 R.id.nav_settings -> {
-                    binding.btnCreateItem.visibility = View.GONE
                     setFragment(infoFragment)
                     true
                 }
@@ -59,9 +55,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnCreateItem.setOnClickListener {
+        /*binding.btnCreateItem.setOnClickListener {
             showCreateItemDialog()
-        }
+        }*/
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -69,23 +65,23 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit()
     }
 
-    private fun showCreateItemDialog() {
-        val dialogBinding = DialogCreateItemBinding.inflate(layoutInflater)
+    /*private fun showCreateItemDialog() {
+       val dialogBinding = DialogCreateItemBinding.inflate(layoutInflater)
 
-        createItemDialog.setContentView(dialogBinding.root)
-        createItemDialog.setCancelable(true)
-        createItemDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+       createItemDialog.setContentView(dialogBinding.root)
+       createItemDialog.setCancelable(true)
+       createItemDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        dialogBinding.btnCreateTask.setOnClickListener {
-            startActivity(Intent(this, CreateTaskActivity::class.java))
-            createItemDialog.dismiss()
-        }
+       dialogBinding.btnCreateTask.setOnClickListener {
+           startActivity(Intent(this, CreateTaskActivity::class.java))
+           createItemDialog.dismiss()
+       }
 
-        dialogBinding.btnCreateTaskGroup.setOnClickListener {
-            startActivity(Intent(this, CreateTaskGroupActivity::class.java))
-            createItemDialog.dismiss()
-        }
+       dialogBinding.btnCreateTaskGroup.setOnClickListener {
+           startActivity(Intent(this, CreateTaskGroupActivity::class.java))
+           createItemDialog.dismiss()
+       }
 
-        createItemDialog.show()
-    }
+       createItemDialog.show()
+   } */
 }
