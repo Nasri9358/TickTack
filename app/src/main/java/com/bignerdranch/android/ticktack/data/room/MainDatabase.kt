@@ -1,5 +1,6 @@
 package com.bignerdranch.android.ticktack.data.room
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,7 +10,6 @@ import com.bignerdranch.android.ticktack.data.room.dao.TaskDao
 import com.bignerdranch.android.ticktack.data.room.dao.TaskGroupDao
 import com.bignerdranch.android.ticktack.data.room.entity.TaskEntity
 import com.bignerdranch.android.ticktack.data.room.entity.TaskGroupEntity
-import com.bignerdranch.android.ticktack.presentation.view.taskGroupView.CreateTaskGroupActivity
 
 
 val MIGRATION_1_2: Migration = object: Migration(1,2) {
@@ -26,7 +26,7 @@ abstract class MainDatabase: RoomDatabase() {
     companion object {
         private var db: MainDatabase? = null
 
-        fun getDatabase(context: CreateTaskGroupActivity): MainDatabase {
+        fun getDatabase(context: Context): MainDatabase {
             if (db == null) {
                 synchronized(MainDatabase::class) {
                     db = Room.databaseBuilder(

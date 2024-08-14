@@ -3,15 +3,15 @@ package com.bignerdranch.android.ticktack.presentation.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bignerdranch.android.ticktack.data.repository.TaskRepositoryImpl
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.models.TaskItem
-import com.bignerdranch.android.ticktack.domain.usecase.GetAllTaskItemsUseCase
 import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.UpdateTaskUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TaskFragmentViewModel(
-    private val getAllTaskItemsUseCase: GetAllTaskItemsUseCase,
+    private val getAllTaskItemsUseCase: TaskRepositoryImpl,
     private val updateTaskUseCase: UpdateTaskUseCase
 ): ViewModel(), TaskViewModel {
     val taskItems = MutableLiveData<List<TaskItem>>()
