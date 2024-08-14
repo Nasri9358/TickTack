@@ -12,32 +12,50 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.data.repository.TaskRepositoryImpl
+import com.bignerdranch.android.ticktack.data.room.MainDatabase
 import com.bignerdranch.android.ticktack.databinding.ActivityTaskBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.GetAllTaskGroupsUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.GetTaskGroupByIdUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.DeleteTaskUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.UpdateTaskUseCase
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
-import com.bignerdranch.android.ticktack.presentation.adapter.TASK_NAME_EXTRA
 import com.bignerdranch.android.ticktack.presentation.viewModel.NotificationViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.TaskActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TaskActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTaskBinding
-    private lateinit var notificationViewModel: NotificationViewModel
-    private lateinit var task: Task
+    private val binding by lazy { ActivityTaskBinding.inflate(layoutInflater) }
+    private val notificationViewModel by lazy { NotificationViewModel(this) }
 
-    private lateinit var taskActivityViewModel: TaskActivityViewModel
+    // Инициализация базы данных и DAO
+    private val database by lazy { MainDatabase.getDatabase(this) }
+    private val taskDao by lazy { database.TaskDao() }
+    private val repository by lazy { TaskRepositoryImpl(taskDao) }
+
+    // Создайте UseCase и другие зависимости
+    private val updateTaskUseCase = UpdateTaskUseCase(repository)
+    private val deleteTaskUseCase = DeleteTaskUseCase(repository)
+    private val getTaskGroupByIdUseCase = GetTaskGroupByIdUseCase(repository)
+    private val getAllTaskGroupsUseCase = GetAllTaskGroupsUseCase(repository)
+
+    // Инициализация ViewModel с использованием конструкторной зависимости
+    private val taskActivityViewModel: TaskActivityViewModel by lazy {
+        TaskActivityViewModel(
+            updateTaskUseCase,
+            deleteTaskUseCase,
+            getTaskGroupByIdUseCase,
+            getAllTaskGroupsUseCase
+        )
+    }
+
+    private var task: Task = Task("", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTaskBinding.inflate(layoutInflater)
-
-        taskActivityViewModel = getViewModel()
-        notificationViewModel = NotificationViewModel(this)
-
-        task = intent.extras?.getSerializable(TASK_NAME_EXTRA) as Task
 
         binding.btnDeleteTask.setOnClickListener {
             cancelTaskNotification()

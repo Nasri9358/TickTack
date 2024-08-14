@@ -1,6 +1,5 @@
 package com.bignerdranch.android.ticktack.presentation.view
 
-import android.os.Binder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,36 +7,35 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import com.bignerdranch.android.ticktack.databinding.FragmentMainBinding
+import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskGroupBinding
 import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListener
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
-import com.bignerdranch.android.ticktack.presentation.viewModel.FavouriteTasksFragmentViewModel
-import com.bignerdranch.android.ticktack.presentation.viewModel.MainFragmentViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import com.bignerdranch.android.ticktack.presentation.viewModel.TaskFragmentViewModel
 
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
-    private lateinit var recycler: RecyclerView
-    private lateinit var mainFragmentViewModel: MainFragmentViewModel
+class TaskFragment : Fragment() {
+    // Используем более подходящий для фрагмента binding (вместо Activity binding)
+    private var _binding: FragmentTaskBinding? = null
+    private val binding get() = _binding!!
+
+    // Инициализация ViewModel через делегат viewModels
+    private val mainFragmentViewModel: TaskFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(layoutInflater, container, false)
-        mainFragmentViewModel = getViewModel()
+        _binding = FragmentTaskBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Инициализируем RecyclerView и его адаптер
         val adapter = TaskAdapter(OnItemClickListener(requireContext(), mainFragmentViewModel))
 
-        recycler = binding.rvTaskList
-        recycler.apply {
+        binding.rvTaskList.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
         }
@@ -50,5 +48,10 @@ class MainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainFragmentViewModel.getAllTaskItems()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Очищаем binding при уничтожении представления
     }
 }

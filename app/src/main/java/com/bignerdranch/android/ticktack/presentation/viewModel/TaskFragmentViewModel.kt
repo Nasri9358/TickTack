@@ -10,7 +10,7 @@ import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.UpdateTaskU
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel(
+class TaskFragmentViewModel(
     private val getAllTaskItemsUseCase: GetAllTaskItemsUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase
 ): ViewModel(), TaskViewModel {

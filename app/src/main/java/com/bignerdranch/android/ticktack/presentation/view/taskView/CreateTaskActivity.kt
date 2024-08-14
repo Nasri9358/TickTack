@@ -7,17 +7,28 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.data.repository.TaskRepositoryImpl
+import com.bignerdranch.android.ticktack.data.room.MainDatabase
 import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskBinding
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.utils.DateUtils
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskActivityViewModel
 import com.bignerdranch.android.ticktack.presentation.viewModel.NotificationViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class CreateTaskActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCreateTaskBinding
-    private lateinit var createTaskActivityViewModel: CreateTaskActivityViewModel
-    private lateinit var notificationViewModel: NotificationViewModel
+    private val binding by lazy { ActivityCreateTaskBinding.inflate(layoutInflater) }
+
+    // Инициализация базы данных и DAO
+    private val database by lazy { MainDatabase.getDatabase(this) }
+    private val taskDao by lazy { database.TaskDao() }
+    private val repository by lazy { TaskRepositoryImpl(taskDao) }
+
+    // Создание ViewModel и передача зависимости через конструктор
+    private val createTaskActivityViewModel: CreateTaskActivityViewModel by lazy {
+        CreateTaskActivityViewModel(repository)
+    }
+
+    private val notificationViewModel by lazy { NotificationViewModel(this) }
 
     private var task = Task("", "")
     private var taskGroupId: Int? = null
@@ -25,10 +36,7 @@ class CreateTaskActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateTaskBinding.inflate(layoutInflater)
-
-        createTaskActivityViewModel = getViewModel()
-        notificationViewModel = NotificationViewModel(this)
+        setContentView(binding.root)
 
         taskGroupId = intent.extras?.getInt("taskGroupId")
 
@@ -40,17 +48,16 @@ class CreateTaskActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (completionDate != null) notificationViewModel.setTaskNotification(task, completionDate!!)
+            if (completionDate != null) {
+                notificationViewModel.setTaskNotification(task, completionDate!!)
+            }
             createTaskActivityViewModel.createTask(task)
-
             finish()
         }
 
         binding.btnSetTaskCompletionDate.setOnClickListener {
             setTaskCompletionDate()
         }
-
-        setContentView(binding.root)
     }
 
     private fun createTask() {
@@ -59,10 +66,15 @@ class CreateTaskActivity : AppCompatActivity() {
         val isFavourite = binding.cbIsFavourive.isChecked
         val completionDateInMillis = completionDate
 
-        task = task.copy(title = title, description = description, isFavourite = isFavourite, completionDateInMillis = completionDateInMillis, taskGroupId = taskGroupId)
+        task = task.copy(
+            title = title,
+            description = description,
+            isFavourite = isFavourite,
+            completionDateInMillis = completionDateInMillis,
+            taskGroupId = taskGroupId
+        )
     }
 
-    // использовать LocalDate вместо Calendar
     private fun setTaskCompletionDate() {
         val calendar = Calendar.getInstance()
 
@@ -71,14 +83,11 @@ class CreateTaskActivity : AppCompatActivity() {
             calendar.set(Calendar.MINUTE, minute)
 
             completionDate = calendar.timeInMillis
-
             binding.btnSetTaskCompletionDate.text = DateUtils.normalDateFormat(calendar.timeInMillis)
-
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
 
         val datePickerDialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
-
             timePicker.show()
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 

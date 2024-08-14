@@ -1,5 +1,6 @@
 package com.bignerdranch.android.ticktack.presentation.viewModel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,32 +19,33 @@ class TaskGroupActivityViewModel(
     private val deleteTaskGroupUseCase: DeleteTaskGroupUseCase,
     private val getAllTasksUseCase: GetAllTasksUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase,
-    private val deleteTaskUseCase: DeleteTaskUseCase,
-): ViewModel(), TaskViewModel {
+    private val deleteTaskUseCase: DeleteTaskUseCase
+) : ViewModel(), TaskViewModel {
+
     val tasks = MutableLiveData<List<Task>>()
     private val dispatcher = Dispatchers.IO
 
     fun updateTaskGroup(taskGroup: TaskGroup) {
-        viewModelScope.launch (dispatcher) {
+        viewModelScope.launch(dispatcher) {
             updateTaskGroupUseCase.execute(taskGroup)
         }
     }
 
     fun deleteTaskGroup(taskGroup: TaskGroup) {
-        viewModelScope.launch (dispatcher) {
+        viewModelScope.launch(dispatcher) {
             deleteTaskGroupIds().join()
             deleteTaskGroupUseCase.execute(taskGroup)
         }
     }
 
     fun getAllTasksById(taskGroupId: Int) {
-        viewModelScope.launch (dispatcher) {
+        viewModelScope.launch(dispatcher) {
             tasks.postValue(getAllTasksUseCase.execute(taskGroupId))
         }
     }
 
     fun deleteTasks() {
-        viewModelScope.launch (dispatcher) {
+        viewModelScope.launch(dispatcher) {
             tasks.value?.forEach { deleteTaskUseCase.execute(it) }
         }
     }
@@ -53,7 +55,7 @@ class TaskGroupActivityViewModel(
     }
 
     override fun completeTask(task: Task) {
-        viewModelScope.launch (dispatcher){
+        viewModelScope.launch(dispatcher) {
             updateTaskUseCase.execute(task.copy(isCompleted = !task.isCompleted))
             getAllTasksById(task.taskGroupId!!)
         }

@@ -2,14 +2,13 @@ package com.bignerdranch.android.ticktack.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bignerdranch.android.ticktack.data.repository.TaskRepositoryImpl
 import com.bignerdranch.android.ticktack.domain.models.Task
-import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.CreateTaskGroupUseCase
-import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.CreateTaskUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateTaskActivityViewModel(
-private val createTaskUseCase: CreateTaskUseCase
+private val createTaskUseCase: TaskRepositoryImpl
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 

@@ -2,7 +2,6 @@ package com.bignerdranch.android.ticktack.presentation.adapter
 
 import android.content.Context
 import android.content.Intent
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bignerdranch.android.ticktack.domain.models.Task
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.domain.models.TaskItem

@@ -1,25 +1,33 @@
 package com.bignerdranch.android.ticktack.presentation.view.taskGroupView
 
-import android.app.Activity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.inputmethod.InputBinding
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.ticktack.R
+import com.bignerdranch.android.ticktack.data.repository.TaskGroupRepositoryImpl
+import com.bignerdranch.android.ticktack.data.room.MainDatabase
 import com.bignerdranch.android.ticktack.databinding.ActivityCreateTaskGroupBinding
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
 import com.bignerdranch.android.ticktack.presentation.viewModel.CreateTaskGroupActivityViewModel
-import kotlinx.coroutines.internal.OpDescriptor
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class CreateTaskGroupActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCreateTaskGroupBinding
-    private lateinit var createTaskGroupActivityViewModel: CreateTaskGroupActivityViewModel
+    private val binding by lazy { ActivityCreateTaskGroupBinding.inflate(layoutInflater) }
+
+    // Получите базу данных и DAO
+    private val database by lazy { MainDatabase.getDatabase(this) }
+    private val taskGroupDao by lazy { database.TaskGroupDao() }
+
+    // Создайте репозиторий с использованием DAO
+    private val repository by lazy { TaskGroupRepositoryImpl(taskGroupDao) }
+
+    // ViewModel для TaskGroupActivityViewModel
+    private val createTaskGroupActivityViewModel: CreateTaskGroupActivityViewModel by lazy {
+        CreateTaskGroupActivityViewModel(repository)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateTaskGroupBinding.inflate(layoutInflater)
-        createTaskGroupActivityViewModel = getViewModel()
+        setContentView(binding.root)
 
         binding.btnAddTaskGroup.setOnClickListener {
             val name = binding.inputTaskGroupName.text.toString()
@@ -32,8 +40,6 @@ class CreateTaskGroupActivity : AppCompatActivity() {
 
             addTaskGroup(name, description)
         }
-
-        setContentView(binding.root)
     }
 
     private fun addTaskGroup(name: String, description: String) {

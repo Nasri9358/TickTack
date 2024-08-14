@@ -5,33 +5,47 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.ticktack.data.repository.TaskGroupRepositoryImpl
+import com.bignerdranch.android.ticktack.data.room.MainDatabase
 import com.bignerdranch.android.ticktack.databinding.ActivityTaskGroupBinding
 import com.bignerdranch.android.ticktack.domain.models.TaskGroup
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.DeleteTaskGroupUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskGroupUseCase.UpdateTaskGroupUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.DeleteTaskUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.GetAllTasksUseCase
+import com.bignerdranch.android.ticktack.domain.usecase.taskUseCases.UpdateTaskUseCase
 import com.bignerdranch.android.ticktack.presentation.adapter.OnItemClickListener
 import com.bignerdranch.android.ticktack.presentation.adapter.TASK_GROUP_NAME_EXTRA
 import com.bignerdranch.android.ticktack.presentation.adapter.TaskAdapter
 import com.bignerdranch.android.ticktack.presentation.view.taskView.CreateTaskActivity
 import com.bignerdranch.android.ticktack.presentation.viewModel.TaskGroupActivityViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TaskGroupActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTaskGroupBinding
-    private lateinit var recycler: RecyclerView
-    private lateinit var taskGroup: TaskGroup
+    private val binding by lazy { ActivityTaskGroupBinding.inflate(layoutInflater) }
+    private val recycler by lazy { binding.rvTaskGroupTasks }
+    private val taskGroup by lazy { intent.extras?.getSerializable(TASK_GROUP_NAME_EXTRA) as TaskGroup }
 
-//    private lateinit var taskGroupViewModel: TaskGroupViewModel
-//    private lateinit var tasksViewModel: TasksViewModel
+    // Получите базу данных и DAO
+    private val database by lazy { MainDatabase.getDatabase(this) }
+    private val taskGroupDao by lazy { database.TaskGroupDao() }
 
-    private lateinit var taskGroupActivityViewModel: TaskGroupActivityViewModel
+    // Создайте репозиторий с использованием DAO
+    private val repository by lazy { TaskGroupRepositoryImpl(taskGroupDao) }
+
+    // ViewModel для TaskGroupActivityViewModel
+    private val taskGroupActivityViewModel by lazy {
+        TaskGroupActivityViewModel(
+            updateTaskGroupUseCase = UpdateTaskGroupUseCase(repository),
+            deleteTaskGroupUseCase = DeleteTaskGroupUseCase(repository),
+            getAllTasksUseCase = GetAllTasksUseCase(repository),
+            updateTaskUseCase = UpdateTaskUseCase(repository),
+            deleteTaskUseCase = DeleteTaskUseCase(repository)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTaskGroupBinding.inflate(layoutInflater)
-        taskGroupActivityViewModel = getViewModel()
-
-        taskGroup = intent.extras?.getSerializable(TASK_GROUP_NAME_EXTRA) as TaskGroup
-        recycler = binding.rvTaskGroupTasks
+        setContentView(binding.root)
 
         val adapter = TaskAdapter(OnItemClickListener(this, taskGroupActivityViewModel))
 
@@ -42,24 +56,13 @@ class TaskGroupActivity : AppCompatActivity() {
 
         taskGroupActivityViewModel.tasks.observe(this) {
             adapter.updateList(it)
-
-            binding.tvIsEmptyList.visibility = if (it.isEmpty()) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            binding.tvIsEmptyList.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        binding.btnDeleteTaskGroup.setOnClickListener {
-            deleteTaskGroup()
-        }
-
-        binding.btnAddTaskToGroup.setOnClickListener {
-            addTask()
-        }
+        binding.btnDeleteTaskGroup.setOnClickListener { deleteTaskGroup() }
+        binding.btnAddTaskToGroup.setOnClickListener { addTask() }
 
         setTaskGroupData()
-        setContentView(binding.root)
     }
 
     override fun onPause() {
@@ -77,19 +80,20 @@ class TaskGroupActivity : AppCompatActivity() {
         val name = binding.tvTaskGroupName.text.toString()
         val desc = binding.tvTaskGroupDescription.text.toString()
 
-        taskGroup = if (newTaskGroup.name != title || newTaskGroup.description != desc){
+        val updatedTaskGroup = if (newTaskGroup.name != name || newTaskGroup.description != desc) {
             newTaskGroup.copy(name = name, description = desc)
         } else {
             newTaskGroup
         }
 
-        taskGroupActivityViewModel.updateTaskGroup(taskGroup)
+        taskGroupActivityViewModel.updateTaskGroup(updatedTaskGroup)
         setTaskGroupData()
     }
 
     private fun addTask() {
-        val intent = Intent(this, CreateTaskActivity::class.java)
-        intent.putExtra("taskGroupId", taskGroup.id)
+        val intent = Intent(this, CreateTaskActivity::class.java).apply {
+            putExtra("taskGroupId", taskGroup.id)
+        }
         startActivity(intent)
     }
 
@@ -98,7 +102,6 @@ class TaskGroupActivity : AppCompatActivity() {
         binding.tvTaskGroupDescription.setText(taskGroup.description)
     }
 
-    // добавить уведомление, что делать с задачами
     private fun deleteTaskGroup() {
         taskGroupActivityViewModel.deleteTaskGroup(taskGroup)
         finish()
