@@ -14,7 +14,7 @@ class CreateTaskGroupActivityViewModel(
 
     fun createTaskGroup(taskGroup: TaskGroup) {
         viewModelScope.launch(dispatcher) {
-            createTaskGroupUseCase.execute(taskGroup)
+            createTaskGroupUseCase.createTaskGroup(taskGroup)
         }
     }
 }

@@ -14,7 +14,7 @@ private val createTaskUseCase: TaskRepositoryImpl
 
     fun createTask(task: Task) {
         viewModelScope.launch(dispatcher) {
-            createTaskUseCase.execute(task)
+            createTaskUseCase.createTask(task)
         }
     }
 }

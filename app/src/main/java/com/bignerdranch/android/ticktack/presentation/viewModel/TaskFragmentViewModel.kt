@@ -19,7 +19,7 @@ class TaskFragmentViewModel(
 
     fun getAllTaskItems() {
         viewModelScope.launch (dispatcher) {
-            taskItems.postValue(getAllTaskItemsUseCase.execute())
+            taskItems.postValue(getAllTaskItemsUseCase.getAllTasks())
         }
     }
 

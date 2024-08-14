@@ -22,6 +22,8 @@ class FavouriteTasksFragmentViewModel(
         }
     }
 
+
+
     override fun completeTask(task: Task) {
         viewModelScope.launch(dispatcher) {
             updateTaskUseCase.execute(task.copy(isCompleted = !task.isCompleted))

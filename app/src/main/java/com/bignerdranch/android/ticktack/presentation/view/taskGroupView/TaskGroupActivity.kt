@@ -32,7 +32,24 @@ class TaskGroupActivity : AppCompatActivity() {
     // Создайте репозиторий с использованием DAO
     private val repository by lazy { TaskGroupRepositoryImpl(taskGroupDao) }
 
+    // Создайте UseCase объекты
+    private val updateTaskGroupUseCase by lazy { UpdateTaskGroupUseCase(repository) }
+    private val deleteTaskGroupUseCase by lazy { DeleteTaskGroupUseCase(repository) }
+    private val getAllTasksUseCase by lazy { GetAllTasksUseCase(repository) }
+    private val updateTaskUseCase by lazy { UpdateTaskUseCase(repository) }
+    private val deleteTaskUseCase by lazy { DeleteTaskUseCase(repository) }
+
     // ViewModel для TaskGroupActivityViewModel
+    private val taskGroupActivityViewModel by lazy {
+        TaskGroupActivityViewModel(
+            updateTaskGroupUseCase = updateTaskGroupUseCase,
+            deleteTaskGroupUseCase = deleteTaskGroupUseCase,
+            getAllTasksUseCase = getAllTasksUseCase,
+            updateTaskUseCase = updateTaskUseCase,
+            deleteTaskUseCase = deleteTaskUseCase
+        )
+    }
+    /*// ViewModel для TaskGroupActivityViewModel
     private val taskGroupActivityViewModel by lazy {
         TaskGroupActivityViewModel(
             updateTaskGroupUseCase = UpdateTaskGroupUseCase(repository),
@@ -41,7 +58,7 @@ class TaskGroupActivity : AppCompatActivity() {
             updateTaskUseCase = UpdateTaskUseCase(repository),
             deleteTaskUseCase = DeleteTaskUseCase(repository)
         )
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

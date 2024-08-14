@@ -20,6 +20,7 @@ interface TaskDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTask(taskEntity: TaskEntity)
 
+
     @Query("SELECT * FROM task_table WHERE taskGroupId IS NULL ORDER BY isCompleted ASC")
     suspend fun getAllTasks(): List<TaskEntity>
 

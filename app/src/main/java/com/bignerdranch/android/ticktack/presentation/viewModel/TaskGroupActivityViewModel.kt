@@ -1,6 +1,5 @@
 package com.bignerdranch.android.ticktack.presentation.viewModel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
